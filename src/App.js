@@ -3,19 +3,10 @@ import './App.css';
 import { useAuth, hasAuthParams } from "react-oidc-context";
 import Profile from './Profile';
 import { useEffect } from 'react';
+
 function App() {
   const auth = useAuth();
-  
-  // automatically sign-in
-  useEffect(() => {
-    if (!hasAuthParams() &&
-    !auth.isAuthenticated && !auth.activeNavigator && !auth.isLoading) {
-      auth.signinRedirect();
-    }
-  }, [auth.isAuthenticated, auth.activeNavigator, auth.isLoading, auth.signinRedirect]);
-  
-  
-  
+
   switch (auth.activeNavigator) {
     case "signinSilent":
     return <div>Signing you in...</div>;
@@ -45,7 +36,7 @@ function App() {
       "border": "none",
       "borderRadius": "2em",
       "backgroundColor": "white",
-      "cursor": "pointer"}} onClick={() => void auth.removeUser()}>
+      "cursor": "pointer"}} onClick={() => {auth.removeUser()}}>
       Log out
       </button>
       </header>

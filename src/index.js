@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from "react-oidc-context";
-
+import { WebStorageStateStore } from 'oidc-client-ts';
 
 const onSigninCallback = () => {
      window.history.replaceState(
@@ -17,7 +17,8 @@ const oidcConfig = {
   authority: process.env.REACT_APP_EASYAUTH_APP_URL + "/tenantbackend",
   client_id: process.env.REACT_APP_EASYAUTH_CLIENT_ID,
   redirect_uri: process.env.REACT_APP_EASYAUTH_REDIRECT_URL,
-  onSigninCallback: onSigninCallback
+  onSigninCallback: onSigninCallback,
+  userStore: new WebStorageStateStore({ store: window.localStorage })
 };
 
 
