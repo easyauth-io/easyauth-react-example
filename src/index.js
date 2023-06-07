@@ -3,34 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { AuthProvider } from "react-oidc-context";
-import { WebStorageStateStore } from 'oidc-client-ts';
-
-const onSigninCallback = () => {
-     window.history.replaceState(
-         {},
-         document.title,
-         window.location.pathname
-     )
-}
-const oidcConfig = {
-  authority: process.env.REACT_APP_EASYAUTH_APP_URL + "/tenantbackend",
-  client_id: process.env.REACT_APP_EASYAUTH_CLIENT_ID,
-  redirect_uri: process.env.REACT_APP_EASYAUTH_REDIRECT_URL,
-  onSigninCallback: onSigninCallback,
-  userStore: new WebStorageStateStore({ store: window.localStorage })
-};
-
-
-
-console.log(oidcConfig);
+import { EasyauthProvider } from '@easyauth.io/easyauth-react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider {...oidcConfig}>
+    <EasyauthProvider >
       <App />
-    </AuthProvider>
+    </EasyauthProvider>
   </React.StrictMode>
 );
 
