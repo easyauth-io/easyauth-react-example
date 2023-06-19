@@ -1,10 +1,18 @@
 import logo from "./logo.svg";
 import "./App.css";
-import Profile from "./Profile";
-import { useEasyauth } from "@easyauth.io/easyauth-react";
+import {
+  SignedIn,
+  SignedOut,
+  UserButton,
+  UserProfile,
+  useEasyauth,
+  useUser,
+} from "@easyauth.io/easyauth-react";
+import Profile from "./profile";
 
 function App() {
   const auth = useEasyauth();
+  const { isAuthenticated, user, isLoading } = useUser();
 
   switch (auth.activeNavigator) {
     case "signinSilent":
@@ -21,55 +29,37 @@ function App() {
     return <div>Oops... {auth.error.message}</div>;
   }
 
-  if (auth.isAuthenticated) {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>Hello {auth.user?.profile.sub} </p>
-          <Profile />
-          <button
-            style={{
-              padding: "0.2em 1em",
-              fontSize: "1em",
-              border: "none",
-              borderRadius: "2em",
-              backgroundColor: "white",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              auth.removeUser();
-            }}
-          >
-            Log out
-          </button>
-        </header>
-      </div>
-    );
-  }
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button
-          style={{
-            padding: "0.2em 1em",
-            fontSize: "1em",
-            border: "none",
-            borderRadius: "2em",
-            backgroundColor: "white",
-            cursor: "pointer",
-          }}
-          onClick={() => void auth.signinRedirect()}
-        >
-          Log in
-        </button>
-      </header>
-    </div>
+    <>
+      <SignedIn>
+        <div className="App">
+          <header className="App-header">
+            <div className="Usr-btn">
+              <UserButton />
+            </div>
+            <img src={logo} className="App-logo" alt="logo" />
+            <p>Hello {user.email} </p>
+            <Profile/>
+          </header>
+        </div>
+      </SignedIn>
+      <SignedOut>
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <p>
+              Edit <code>src/App.js</code> and save to reload.
+            </p>
+            <button
+              className="btn-style"
+              onClick={() => void auth.signinRedirect()}
+            >
+              Log in
+            </button>
+          </header>
+        </div>
+      </SignedOut>
+    </>
   );
 }
 
